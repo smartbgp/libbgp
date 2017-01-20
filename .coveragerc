@@ -1,0 +1,4 @@
+[run]
+branch = True
+source = libbgp
+omit = libbgp/tests/*
