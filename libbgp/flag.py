@@ -13,10 +13,14 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from libbgp.bmp.message import Message  # noqa
-from libbgp.bmp.route_monitor import RouteMonitoring  # noqa
-from libbgp.bmp.stats_report import StatsReport  # noqa
-from libbgp.bmp.peer_down import PeerDownNotification  # noqa
-from libbgp.bmp.peer_up import PeerUpNotification  # noqa
-from libbgp.bmp.initiation import Initiation  # noqa
-from libbgp.bmp.termination import Termination  # noqa
+
+class ByteFlag(int):
+
+    FLAGS = ['']
+
+    def dict(self):
+        bit_list = []
+        for i in range(8):
+            bit_list.append((self >> i) & 1)
+        bit_list.reverse()
+        return dict(zip(self.FLAGS, bit_list[:len(self.FLAGS)]))

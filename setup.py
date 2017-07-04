@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages
+from libbgp import __version__
 
-
-with open('README.md') as f:
+with open('README.rst') as f:
     long_description = f.read()
 
 setup(
     name='libbgp',
-    version='0.1.0',
+    version=__version__,
     url='https://github.com/smartbgp/libbgp',
     license='Apache 2.0',
     author='Peng Xiao',

@@ -51,7 +51,7 @@ class Open(Message):
     VERSION = 4
 
     @classmethod
-    def unpack(cls, data, capability):
+    def unpack(cls, data, length, capability):
         open_msg = dict()
         try:
             open_msg['version'], open_msg['asn'], open_msg['hold-time'] = struct.unpack('!BHH', data[:5])
@@ -76,7 +76,7 @@ class Open(Message):
         opt_para_len = struct.unpack('!B', data[9:10])
         if opt_para_len:
             open_msg['capabilities'] = Capabilities.unpack(data[10:]).value
-        return cls(value=open_msg)
+        return cls(value=open_msg, length=length)
 
     @classmethod
     def pack(cls, data, capability):

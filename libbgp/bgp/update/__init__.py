@@ -41,7 +41,7 @@ class Update(Message):
     TYPE_STR = 'update'
 
     @classmethod
-    def unpack(cls, data, capability):
+    def unpack(cls, data, length, capability):
 
         results_dict = dict()
 
@@ -58,7 +58,7 @@ class Update(Message):
 
         results_dict.update(Attributes.unpack(attribute_data, capability).dict())
 
-        return cls(value=results_dict)
+        return cls(value=results_dict, length=length)
 
     @classmethod
     def pack(cls, data, capability):

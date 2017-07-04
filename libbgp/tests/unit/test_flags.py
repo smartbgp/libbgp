@@ -13,10 +13,15 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from libbgp.bmp.message import Message  # noqa
-from libbgp.bmp.route_monitor import RouteMonitoring  # noqa
-from libbgp.bmp.stats_report import StatsReport  # noqa
-from libbgp.bmp.peer_down import PeerDownNotification  # noqa
-from libbgp.bmp.peer_up import PeerUpNotification  # noqa
-from libbgp.bmp.initiation import Initiation  # noqa
-from libbgp.bmp.termination import Termination  # noqa
+import unittest
+
+from libbgp.flag import ByteFlag
+
+
+class TestByteFlag(unittest.TestCase):
+
+    def test_dict(self):
+
+        ByteFlag.FLAGS = ['A', 'B', 'C', 'D']
+        flags = ByteFlag(0b10100000)
+        self.assertEqual({'B': 0, 'C': 1, 'A': 1, 'D': 0}, flags.dict())

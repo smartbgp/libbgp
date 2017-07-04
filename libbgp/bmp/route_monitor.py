@@ -13,10 +13,19 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from libbgp.bmp.message import Message  # noqa
-from libbgp.bmp.route_monitor import RouteMonitoring  # noqa
-from libbgp.bmp.stats_report import StatsReport  # noqa
-from libbgp.bmp.peer_down import PeerDownNotification  # noqa
-from libbgp.bmp.peer_up import PeerUpNotification  # noqa
-from libbgp.bmp.initiation import Initiation  # noqa
-from libbgp.bmp.termination import Termination  # noqa
+from .message import Message
+
+
+@Message.register
+class RouteMonitoring(Message):
+
+    TYPE = Message.ROUTE_MONITORING
+    TYPE_STR = 'route-monitoring'
+
+    @classmethod
+    def unpack(cls, data):
+        pass
+
+    @classmethod
+    def pack(cls, data):
+        pass

@@ -32,10 +32,10 @@ class CiscoRouteRefresh(Message):
     TYPE_STR = 'cisco-route-refresh'
 
     @classmethod
-    def unpack(cls, data, capability):
+    def unpack(cls, data, length, capability):
 
         afi, res, safi = struct.unpack("!HBB", data)
-        return cls(value=str(Family(afi, safi)))
+        return cls(value=str(Family(afi, safi)), length=length)
 
     @classmethod
     def pack(cls, data, capability):

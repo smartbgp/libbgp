@@ -26,6 +26,15 @@ class TestKeepAlive(unittest.TestCase):
         data_hex = b'\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\x00\x13\x04'
         self.assertEqual({'msg': None, 'type': Message.KEEPALIVE}, Message.unpack(data=data_hex).dict())
 
+        multi_message_data_hex = b'\xff\xff\xff\xff\xff\xff\xff\xff\xff' \
+                                 b'\xff\xff\xff\xff\xff\xff\xff\x00\x13\x04' \
+                                 b'\xff\xff\xff\xff\xff\xff\xff\xff\xff' \
+                                 b'\xff\xff\xff\xff\xff\xff\xff\x00\x13\x04'
+        while multi_message_data_hex:
+            msg = Message.unpack(data=multi_message_data_hex)
+            multi_message_data_hex = multi_message_data_hex[msg.length:]
+            self.assertEqual({'msg': None, 'type': Message.KEEPALIVE}, msg.dict())
+
     def test_pack(self):
         data_hex = b'\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\x00\x13\x04'
         self.assertEqual(data_hex, Message.pack({'msg': None, 'type': Message.KEEPALIVE}).hex_value)

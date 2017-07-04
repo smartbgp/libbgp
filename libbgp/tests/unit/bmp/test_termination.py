@@ -13,10 +13,19 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from libbgp.bmp.message import Message  # noqa
-from libbgp.bmp.route_monitor import RouteMonitoring  # noqa
-from libbgp.bmp.stats_report import StatsReport  # noqa
-from libbgp.bmp.peer_down import PeerDownNotification  # noqa
-from libbgp.bmp.peer_up import PeerUpNotification  # noqa
-from libbgp.bmp.initiation import Initiation  # noqa
-from libbgp.bmp.termination import Termination  # noqa
+import unittest
+
+from libbgp.bmp.message import Message
+
+
+class TestTermination(unittest.TestCase):
+
+    def test_unpack(self):
+
+        data_hex = b'\x03\x00\x00\x00\x0c\x05\x00\x01\x00\x02\x00\x00'
+        self.assertEqual(
+            {
+                'type': Message.TERMINATION,
+                'msg': {'reason': Message.unpack(data_hex).reason_codict[0]}
+            },
+            Message.unpack(data_hex).dict())

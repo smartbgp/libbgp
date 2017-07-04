@@ -16,15 +16,33 @@
 import unittest
 
 from libbgp.bgp.message import Message
+from libbgp.bgp.notification import Notification
 
 
 class TestNotification(unittest.TestCase):
 
     def test_unpack(self):
 
-        data_hex = b'\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\x00\x17\x03\x01\x02\x10\x06'
+        data_hex = b'\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff' \
+                   b'\xff\xff\xff\xff\x00\x17\x03\x01\x02\x10\x06'
+        msg = {
+            'type': Message.NOTIFICATION,
+            'msg': {'code': [1, 2], 'msg': Notification.error_subcode[(1, 2)]}}
         self.assertEqual(
-            Message.NOTIFICATION, Message.unpack(data=data_hex).dict().get('type'))
+            msg, Message.unpack(data=data_hex).dict())
+
+    def test_pack(self):
+
+        msg = {
+            'type': Message.NOTIFICATION,
+            'msg': {
+                'code': [1, 2],
+                'msg': []
+            }
+        }
+        data_hex = b'\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff' \
+                   b'\xff\xff\xff\xff\x00\x15\x03\x01\x02'
+        self.assertEqual(data_hex, Message.pack(data=msg).hex_value)
 
 
 if __name__ == '__main__':

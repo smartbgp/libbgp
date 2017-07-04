@@ -13,8 +13,8 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from .message import Message
 from libbgp.exception import BGPNotification
+from .message import Message
 
 
 @Message.register
@@ -24,10 +24,10 @@ class KeepAlive(Message):
     TYPE_STR = 'keepalive'
 
     @classmethod
-    def unpack(cls, data, capability):
+    def unpack(cls, data, length, capability):
         if len(data) != 0:
             raise BGPNotification(1, 2)
-        return cls(value=None)
+        return cls(value=None, length=length + cls.HDR_LEN)
 
     @classmethod
     def pack(cls, data, capability):

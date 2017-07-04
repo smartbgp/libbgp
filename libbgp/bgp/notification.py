@@ -13,6 +13,9 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+"""Notification Message Class
+"""
+
 import struct
 
 from libbgp.bgp.message import Message
@@ -91,14 +94,25 @@ class Notification(Message):
         (7, 2): "Malformed Message Subtype"
     }
 
-    def __init__(self, value, length=None):
-        self.value = value
-        self.length = length
-
     @classmethod
-    def unpack(cls, data, capability):
+    def unpack(cls, data, length, capability):
+        """unpack notification binary message
+        """
         error, suberror = struct.unpack('!BB', data[:2])
         if (error, suberror) in cls.error_subcode:
-            return cls(value=cls.error_subcode[(error, suberror)])
+            return cls(
+                value={
+                    'code': [error, suberror],
+                    'msg': cls.error_subcode[(error, suberror)]
+                },
+                length=length
+            )
         else:
-            return cls(value='unknown error')
+            return cls(value='unknown error', length=length)
+
+    @classmethod
+    def pack(cls, data, capability):
+        """pack message to binary
+        """
+        msg = struct.pack('!BB', data['code'][0], data['code'][1])
+        return cls(value=data, hex_value=msg)
